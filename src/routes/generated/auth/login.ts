@@ -1,7 +1,6 @@
 
-	import { hashPassword } from '$lib/auth';
+	import { authenticateUser } from '$lib/auth';
 	import type { Action, Loader } from 'full-stack-svelte-kit';
-	import db from '$lib/db';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
 		if (locals.session.data.isLoggedIn) {
@@ -15,59 +14,34 @@
 	};
 
 	interface ActionData {
-		username: string;
 		email: string;
 		password: string;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
-		const username = body.get('username');
 		const email = body.get('email');
 		const password = body.get('password');
 
-		const user = await db.user.findUnique({ where: { email } });
-
-		if (user) {
-			return {
-				data: {
-					username,
-					email,
-					password
-				},
-				errors: {
-					email: 'User with given E-Mail already exists'
-				}
-			};
-		}
-
-		const passwordHash = await hashPassword(password);
-
 		try {
-			const newUser = await db.user.create({
-				data: {
-					email,
-					passwordHash,
-					username
-				}
-			});
+			const { user, errors } = await authenticateUser(email, password);
 
-			locals.session.data = { isLoggedIn: true, user: newUser };
+			if (errors.email || errors.password) {
+				return {
+					errors
+				};
+			}
+
+			locals.session.data = { isLoggedIn: true, user };
 		} catch (error) {
 			return {
-				data: {
-					username,
-					email,
-					password
-				},
 				errors: {
-					username: 'Username already exists'
+					formError: error.message
 				}
 			};
 		}
 
 		return {
 			data: {
-				username,
 				email,
 				password
 			}
@@ -89,17 +63,24 @@
         headers?: Record<string, string | string[]>;
         data?: Record<any, any>;
         errors?: Record<string, string>;
+        redirect?: string;
         status?: number;
     }
     
 
       export const get = async function(params){
             const loaded = await loader(params) as unknown as __Loader_Result;
-  
+
+            let _metadata = {}; 
+            
+
+            const loadedProps = loaded?.props || {};
+            const metaProps = {  };
+
             return {
                  headers: loaded?.headers || {},
-                 body: {
-                   props: loaded?.props,  
+                 body: {  
+                   props: {...loadedProps, ...metaProps},  
                    error: loaded?.error,
                    status: loaded?.status,
                    redirect: loaded?.redirect,
@@ -117,7 +98,7 @@
                  body: {
                    data: loaded?.data,  
                    errors: loaded?.errors,
-                   status: loaded?.status,  
+                   status: loaded?.status,
                  }
              }  
          }

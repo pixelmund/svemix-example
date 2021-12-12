@@ -14,6 +14,11 @@
 			}
 		};
 	};
+
+	export const metadata = ({ users }) => ({
+		title: 'All Users',
+		description: 'This is a user'
+	});
 </script>
 
 <script lang="ts">

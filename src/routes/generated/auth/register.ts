@@ -89,17 +89,24 @@
         headers?: Record<string, string | string[]>;
         data?: Record<any, any>;
         errors?: Record<string, string>;
+        redirect?: string;
         status?: number;
     }
     
 
       export const get = async function(params){
             const loaded = await loader(params) as unknown as __Loader_Result;
-  
+
+            let _metadata = {}; 
+            
+
+            const loadedProps = loaded?.props || {};
+            const metaProps = {  };
+
             return {
                  headers: loaded?.headers || {},
-                 body: {
-                   props: loaded?.props,  
+                 body: {  
+                   props: {...loadedProps, ...metaProps},  
                    error: loaded?.error,
                    status: loaded?.status,
                    redirect: loaded?.redirect,
@@ -117,7 +124,7 @@
                  body: {
                    data: loaded?.data,  
                    errors: loaded?.errors,
-                   status: loaded?.status,  
+                   status: loaded?.status,
                  }
              }  
          }
