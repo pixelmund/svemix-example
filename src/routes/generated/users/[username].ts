@@ -3,20 +3,25 @@
 	import type { User } from '@prisma/client';
 	import type { Loader } from 'svemix';
 
-	type LoadedUser = Pick<User, 'id' | 'email' | 'username'>;
+	interface LoaderData {
+		user: Pick<User, 'id' | 'username' | 'email'>;
+	}
 
-	export const loader: Loader<{ users: LoadedUser[] }, Locals> = async function ({}) {
-		const users = await db.user.findMany({ select: { username: true, email: true, id: true } });
+	export const loader: Loader<LoaderData, Locals> = async function ({ params }) {
+		const user = await db.user.findUnique({
+			where: { username: params.username },
+			select: { id: true, email: true, username: true }
+		});
 
 		return {
 			props: {
-				users
+				user
 			}
 		};
 	};
 
-	export const metadata = ({ users }) => ({
-		title: 'All Users',
+	export const metadata = ({ user }) => ({
+		title: user?.username,
 		description: 'This is a user'
 	});
 

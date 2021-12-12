@@ -1,6 +1,6 @@
 
 	import { authenticateUser } from '$lib/auth';
-	import type { Action, Loader } from 'full-stack-svelte-kit';
+	import type { Action, Loader } from 'svemix';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
 		if (locals.session.data.isLoggedIn) {

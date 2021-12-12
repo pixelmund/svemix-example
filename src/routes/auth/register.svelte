@@ -1,6 +1,6 @@
 <script context="module" lang="ts" ssr>
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from 'full-stack-svelte-kit';
+	import type { Action, Loader } from 'svemix';
 	import db from '$lib/db';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
@@ -76,7 +76,7 @@
 </script>
 
 <script lang="ts">
-	import Form from 'full-stack-svelte-kit/Form.svelte';
+	import Form from 'svemix/Form.svelte';
 </script>
 
 <div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">

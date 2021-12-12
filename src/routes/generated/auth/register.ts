@@ -1,6 +1,6 @@
 
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from 'full-stack-svelte-kit';
+	import type { Action, Loader } from 'svemix';
 	import db from '$lib/db';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {

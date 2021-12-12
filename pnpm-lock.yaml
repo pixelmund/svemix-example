@@ -7,7 +7,6 @@ specifiers:
   '@types/secure-password': ^3.1.1
   autoprefixer: ^10.3.7
   cssnano: ^5.0.8
-  full-stack-svelte-kit: ^0.0.5
   postcss: ^8.3.9
   postcss-load-config: ^3.1.0
   prettier: ^2.4.1
@@ -19,6 +18,7 @@ specifiers:
   svelte-kit-cookie-session: ^1.4.0
   svelte-preprocess: ^4.9.8
   svelte2tsx: ^0.4.11
+  svemix: ^0.0.11
   tailwindcss: ^3.0.0
   tslib: ^2.3.1
   typescript: ^4.4.3
@@ -34,7 +34,6 @@ devDependencies:
   '@sveltejs/kit': 1.0.0-next.201_svelte@3.44.2
   autoprefixer: 10.4.0_postcss@8.4.4
   cssnano: 5.0.12_postcss@8.4.4
-  full-stack-svelte-kit: link:../full-stack-svelte-kit
   postcss: 8.4.4
   postcss-load-config: 3.1.0
   prettier: 2.5.1
@@ -44,6 +43,7 @@ devDependencies:
   svelte-check: 2.2.10_4d00e6e9f7f5e449d97e7d1c5d5a9a9b
   svelte-preprocess: 4.9.8_5ab7b0cf18f33888c85a14ebc175e398
   svelte2tsx: 0.4.11_svelte@3.44.2+typescript@4.5.3
+  svemix: 0.0.11
   tailwindcss: 3.0.1_6b4e3d148bdcb715d5f821ed0a9c268b
   tslib: 2.3.1
   typescript: 4.5.3
@@ -1808,6 +1808,10 @@ packages:
       pascal-case: 3.1.2
       svelte: 3.44.2
       typescript: 4.5.3
+    dev: true
+
+  /svemix/0.0.11:
+    resolution: {integrity: sha512-jBv1OXLro51L1q/2FjzQ+Rx9q8uMaap0pz5sEU9aC9HhK4z4HYNst+qaw+PPqmVy8JZo9H+55hynEMoN4QtvvA==}
     dev: true
 
   /svgo/2.8.0:
