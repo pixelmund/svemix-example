@@ -63,6 +63,19 @@
     //@ts-ignore
     const loaded = await loader(params) as unknown as __Loader_Result
 
+    if(loaded?.error || loaded?.redirect){
+      return {
+        headers: loaded?.headers || {},
+        body: {  
+          props: { _metadata: {} },  
+          error: loaded?.error,
+          status: loaded?.status,
+          redirect: loaded?.redirect,
+          maxage: loaded?.maxage    
+        }
+      }
+    }
+
     let _metadata = {};
 
     
@@ -70,7 +83,7 @@
    
 
     const loadedProps = loaded?.props || {};
-    const metaProps = {  _metadata  }
+    const metaProps = { _metadata }
 
     return {
       headers: loaded?.headers || {},
