@@ -1,6 +1,6 @@
 <script context="module" lang="ts" ssr>
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from 'svemix';
+	import type { Action, Loader } from '@svemix/svemix';
 	import db from '$lib/db';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
@@ -51,6 +51,8 @@
 				}
 			});
 
+			delete newUser?.passwordHash;
+
 			locals.session.data = { isLoggedIn: true, user: newUser };
 		} catch (error) {
 			return {
@@ -76,7 +78,7 @@
 </script>
 
 <script lang="ts">
-	import Form from 'svemix/Form.svelte';
+	import Form from '@svemix/svemix/Form.svelte';
 </script>
 
 <div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">

@@ -1,6 +1,6 @@
 <script context="module" lang="ts" ssr>
 	import { authenticateUser } from '$lib/auth';
-	import type { Action, Loader } from 'svemix';
+	import type { Action, Loader } from '@svemix/svemix';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
 		if (locals.session.data.isLoggedIn) {
@@ -31,12 +31,12 @@
 				};
 			}
 
+			delete user?.passwordHash;
+
 			locals.session.data = { isLoggedIn: true, user };
 		} catch (error) {
 			return {
-				errors: {
-					formError: error.message
-				}
+				formError: error.message
 			};
 		}
 
@@ -50,11 +50,11 @@
 </script>
 
 <script lang="ts">
-	import Form from 'svemix/Form.svelte';
+	import Form from '@svemix/svemix/Form.svelte';
 </script>
 
 <div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">
-	<Form let:data let:errors let:formError let:loading on:submit={(e) => console.log(e.detail)}>
+	<Form class="space-y-4" let:data let:errors let:formError let:loading on:submit={(e) => console.log(e.detail)}>
 		<label class="block w-full">
 			<input
 				class="w-full py-3 px-3 rounded-md"

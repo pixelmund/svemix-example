@@ -1,6 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-import svemix from 'svemix';
+import svemix from '@svemix/preprocess';
 import path from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */

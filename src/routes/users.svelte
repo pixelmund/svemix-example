@@ -1,7 +1,7 @@
 <script context="module" lang="ts" ssr>
 	import db from '$lib/db';
 	import type { User } from '@prisma/client';
-	import type { Loader } from 'svemix';
+	import type { Loader } from '@svemix/svemix';
 
 	type LoadedUser = Pick<User, 'id' | 'email' | 'username'>;
 

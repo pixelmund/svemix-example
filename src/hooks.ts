@@ -1,4 +1,9 @@
-import { handleSession } from 'svelte-kit-cookie-session';
+import type { GetSession } from '@sveltejs/kit';
+import { handleSession } from '@svemix/svemix';
+
+export const getSession: GetSession<Locals> = ({ locals }) => {
+	return locals.session.data;
+};
 
 export const handle = handleSession<Locals['session'], Locals>(
 	{ secret: 'SOME_SECRET_VALUE' },
