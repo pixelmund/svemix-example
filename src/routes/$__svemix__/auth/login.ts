@@ -1,7 +1,7 @@
 
   
 	import { authenticateUser } from '$lib/auth';
-	import type { Action, Loader } from '@svemix/svemix';
+	import type { Action, Loader } from 'svemix';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
 		if (locals.session.data.isLoggedIn) {
@@ -62,6 +62,7 @@
     headers?: Record<string, string | string[]>;
     data?: Record<any, any>;
     errors?: Record<string, string>;
+    formError?: string;
     redirect?: string;
     status?: number;
   }

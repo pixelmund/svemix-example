@@ -1,6 +1,6 @@
 <script context="module" lang="ts" ssr>
 	import { authenticateUser } from '$lib/auth';
-	import type { Action, Loader } from '@svemix/svemix';
+	import type { Action, Loader } from 'svemix';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
 		if (locals.session.data.isLoggedIn) {
@@ -50,7 +50,7 @@
 </script>
 
 <script lang="ts">
-	import Form from '@svemix/svemix/Form.svelte';
+	import Form from 'svemix/Form.svelte';
 </script>
 
 <div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">

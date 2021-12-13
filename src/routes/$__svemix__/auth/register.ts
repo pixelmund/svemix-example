@@ -1,7 +1,7 @@
 
   
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from '@svemix/svemix';
+	import type { Action, Loader } from 'svemix';
 	import db from '$lib/db';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {

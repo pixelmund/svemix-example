@@ -1,25 +1,22 @@
 
   
+	import type { Loader } from 'svemix';
+	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
-	import type { User } from '@prisma/client';
-	import type { Loader } from '@svemix/svemix';
 
-	type LoadedUser = Pick<User, 'id' | 'email' | 'username'>;
+	interface Props {
+		posts: Post[];
+	}
 
-	export const loader: Loader<{ users: LoadedUser[] }, Locals> = async function ({}) {
-		const users = await db.user.findMany({ select: { username: true, email: true, id: true } });
+	export const loader: Loader<Props, Locals> = async function ({}) {
+		const posts = await db.post.findMany({ take: 9, orderBy: { createdAt: 'desc' } });
 
 		return {
 			props: {
-				users
+				posts
 			}
 		};
 	};
-
-	export const metadata = ({ users }) => ({
-		title: 'All Users',
-		description: 'This is a user'
-	});
 
   type __Loader_Result = {
     headers?: Record<string, string | string[]>;
@@ -34,6 +31,7 @@
     headers?: Record<string, string | string[]>;
     data?: Record<any, any>;
     errors?: Record<string, string>;
+    formError?: string;
     redirect?: string;
     status?: number;
   }
@@ -46,11 +44,9 @@
     let _metadata = {};
 
     
-    _metadata = await metadata(loaded?.props as unknown as any)
-   
 
     const loadedProps = loaded?.props || {};
-    const metaProps = {  _metadata  }
+    const metaProps = {  }
 
     return {
       headers: loaded?.headers || {},

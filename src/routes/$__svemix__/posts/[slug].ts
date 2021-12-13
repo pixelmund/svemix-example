@@ -1,29 +1,43 @@
 
   
+	import type { Loader, MetaFunction } from 'svemix';
+	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
-	import type { User } from '@prisma/client';
-	import type { Loader } from '@svemix/svemix';
 
-	interface LoaderData {
-		user: Pick<User, 'id' | 'username' | 'email'>;
+	interface Props {
+		post: Post;
 	}
 
-	export const loader: Loader<LoaderData, Locals> = async function ({ params }) {
-		const user = await db.user.findUnique({
-			where: { username: params.username },
-			select: { id: true, email: true, username: true }
-		});
+	export const loader: Loader<Props, Locals> = async function ({ params }) {
+		try {
+			const post = await db.post.findUnique({
+				where: { slug: params.slug },
+				rejectOnNotFound: false
+			});
 
-		return {
-			props: {
-				user
+			if (!post) {
+				return {
+					status: 404,
+					error: 'Post not found'
+				};
 			}
-		};
+
+			return {
+				props: {
+					post
+				}
+			};
+		} catch (error) {
+			return {
+				status: 500,
+				error
+			};
+		}
 	};
 
-	export const metadata = ({ user }) => ({
-		title: user?.username,
-		description: 'This is a user'
+	export const metadata: MetaFunction<Props> = (props) => ({
+		title: props?.post?.title,
+		description: props?.post?.content ? props?.post?.content.slice(0, 150) : ''
 	});
 
   type __Loader_Result = {
@@ -39,6 +53,7 @@
     headers?: Record<string, string | string[]>;
     data?: Record<any, any>;
     errors?: Record<string, string>;
+    formError?: string;
     redirect?: string;
     status?: number;
   }

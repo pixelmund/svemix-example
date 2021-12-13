@@ -1,7 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-import svemix from '@svemix/preprocess';
-import path from 'path';
+import svemix from 'vite-plugin-svemix';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,8 +9,7 @@ const config = {
 	preprocess: [
 		preprocess({
 			postcss: true
-		}),
-		svemix()
+		})
 	],
 
 	kit: {
@@ -19,14 +17,7 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {
-			optimizeDeps: {
-				exclude: ['svelte-kit-cookie-session']
-			},
-			resolve: {
-				alias: {
-					$components: path.resolve('./src/components')
-				}
-			}
+			plugins: [svemix({})]
 		}
 	}
 };
