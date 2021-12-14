@@ -1,5 +1,5 @@
 import type { GetSession } from '@sveltejs/kit';
-import { handleSession } from 'svemix';
+import { handleSession } from 'svemix/server';
 
 export const getSession: GetSession<Locals> = ({ locals }) => {
 	return locals.session.data;

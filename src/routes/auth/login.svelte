@@ -1,21 +1,13 @@
 <script context="module" lang="ts" ssr>
 	import { authenticateUser } from '$lib/auth';
-	import type { Action, Loader } from 'svemix';
-
-	export const loader: Loader<any, Locals> = function ({ locals }) {
-		if (locals.session.data.isLoggedIn) {
-			return {
-				status: 302,
-				redirect: '/'
-			};
-		}
-
-		return {};
-	};
+	import type { Action } from 'svemix/server';
+	import type { User } from '@prisma/client';
 
 	interface ActionData {
-		email: string;
-		password: string;
+		email?: string;
+		password?: string;
+		isLoggedIn?: boolean;
+		user?: User;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
@@ -27,6 +19,10 @@
 
 			if (errors.email || errors.password) {
 				return {
+					data: {
+						email,
+						password
+					},
 					errors
 				};
 			}
@@ -34,59 +30,77 @@
 			delete user?.passwordHash;
 
 			locals.session.data = { isLoggedIn: true, user };
+
+			return {
+				data: {
+					isLoggedIn: true,
+					user
+				}
+			};
 		} catch (error) {
 			return {
+				data: {
+					email,
+					password
+				},
 				formError: error.message
 			};
 		}
-
-		return {
-			data: {
-				email,
-				password
-			}
-		};
 	};
 </script>
 
 <script lang="ts">
-	import Form from 'svemix/Form.svelte';
+	import { Form } from 'svemix';
+	import { session } from '$app/stores';
 </script>
 
-<div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">
-	<Form class="space-y-4" let:data let:errors let:formError let:loading on:submit={(e) => console.log(e.detail)}>
-		<label class="block w-full">
+<Form
+	validate={(data) => {
+		return {
+			email: data.email.length === 0 ? 'Required field' : '',
+			password: data.password.length < 6 ? 'Password must be 6 chars long' : ''
+		};
+	}}
+	on:submit={(e) => {
+		if (e.detail?.data?.isLoggedIn) {
+			session.set({ isLoggedIn: true, user: e.detail?.data?.user });
+		}
+	}}
+	class="space-y-6"
+>
+	<div>
+		<label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+		<div class="mt-1">
 			<input
-				class="w-full py-3 px-3 rounded-md"
-				autocomplete="email"
-				placeholder="E-Mail"
-				type="email"
+				id="email"
 				name="email"
-				value={data?.email || ''}
+				type="email"
+				autocomplete="email"
+				required
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 			/>
-			{#if errors?.email}
-				<p class="text-red-600 text-sm mt-2">
-					{errors.email}
-				</p>
-			{/if}
-		</label>
-		<label class="block">
+		</div>
+	</div>
+
+	<div>
+		<label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
+		<div class="mt-1">
 			<input
-				class="w-full py-3 px-3 rounded-md"
-				autocomplete="new-password"
-				type="password"
+				id="password"
 				name="password"
-				value={data?.password || ''}
+				type="password"
+				autocomplete="current-password"
+				required
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 			/>
-			{#if errors?.password}
-				<p class="text-red-600 text-sm mt-2">
-					{errors.password}
-				</p>
-			{/if}
-		</label>
+		</div>
+	</div>
+	<div>
 		<button
-			class="w-full py-2 text-center bg-indigo-400 text-white font-semibold uppercase rounded-md"
-			type="submit">Sign in</button
+			type="submit"
+			class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 		>
-	</Form>
-</div>
+			Sign in
+		</button>
+	</div>
+</Form>

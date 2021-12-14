@@ -1,6 +1,6 @@
 
   
-	import type { Loader } from 'svemix';
+	import type { Action, Loader } from 'svemix/server';
 	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
 
@@ -16,6 +16,20 @@
 				posts
 			}
 		};
+	};
+
+	export const action: Action<any, any, Locals> = async function ({ locals, body }) {
+		const _action = body.get('_action');
+
+		if (_action === 'logout') {
+			locals.session.destroy();
+			return {
+				redirect: '/',
+				status: 302
+			};
+		}
+
+		return {};
 	};
 
   type __Loader_Result = {
@@ -74,4 +88,44 @@
   }
   
 
+  
+  export const post = async function(params){
+    //@ts-ignore
+    const loaded = await action(params) as unknown as __Action_Result
+
+    // This is a browser fetch
+    if(params.headers && params.headers?.accept === 'application/json'){
+      return {
+        headers: loaded?.headers || {},
+        body: {
+          redirect: loaded?.redirect,
+          formError: loaded?.formError,
+          data: loaded?.data,  
+          errors: loaded?.errors,
+          status: loaded?.status,
+        }
+      }
+    } 
+
+    // This is the default form behaviour, navigate back to form submitter
+    if(!loaded?.redirect){
+      return {
+        headers: {
+          ...(loaded?.headers || {}),
+          'Location': params.headers?.referer
+        },
+        status: loaded?.status || 302,
+        body: {}
+      }
+    }
+
+    return {
+      headers: {
+        ...(loaded?.headers || {}),
+        'Location': loaded?.redirect,
+      },
+      status: loaded?.status || 302,
+      body: {}
+    }
+  }
   

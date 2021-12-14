@@ -1,5 +1,5 @@
 <script context="module" lang="ts" ssr>
-	import type { Loader, MetaFunction } from 'svemix';
+	import type { Loader, MetaFunction } from 'svemix/server';
 	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
 

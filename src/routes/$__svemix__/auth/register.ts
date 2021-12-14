@@ -1,24 +1,16 @@
 
   
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from 'svemix';
+	import type { Action } from 'svemix/server';
+	import type { User } from '@prisma/client';
 	import db from '$lib/db';
 
-	export const loader: Loader<any, Locals> = function ({ locals }) {
-		if (locals.session.data.isLoggedIn) {
-			return {
-				status: 302,
-				redirect: '/'
-			};
-		}
-
-		return {};
-	};
-
 	interface ActionData {
-		username: string;
-		email: string;
-		password: string;
+		username?: string;
+		email?: string;
+		password?: string;
+		isLoggedIn?: boolean;
+		user?: User;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
@@ -55,6 +47,13 @@
 			delete newUser?.passwordHash;
 
 			locals.session.data = { isLoggedIn: true, user: newUser };
+
+			return {
+				data: {
+					isLoggedIn: true,
+					user: newUser
+				}
+			};
 		} catch (error) {
 			return {
 				data: {
@@ -67,14 +66,6 @@
 				}
 			};
 		}
-
-		return {
-			data: {
-				username,
-				email,
-				password
-			}
-		};
 	};
 
   type __Loader_Result = {
@@ -96,56 +87,45 @@
   }
 
   
-  export const get = async function(params){
-    //@ts-ignore
-    const loaded = await loader(params) as unknown as __Loader_Result
-
-    if(loaded?.error || loaded?.redirect){
-      return {
-        headers: loaded?.headers || {},
-        body: {  
-          props: { _metadata: {} },  
-          error: loaded?.error,
-          status: loaded?.status,
-          redirect: loaded?.redirect,
-          maxage: loaded?.maxage    
-        }
-      }
-    }
-
-    let _metadata = {};
-
-    
-
-    const loadedProps = loaded?.props || {};
-    const metaProps = { _metadata }
-
-    return {
-      headers: loaded?.headers || {},
-      body: {  
-        props: {...loadedProps, ...metaProps},  
-        error: loaded?.error,
-        status: loaded?.status,
-        redirect: loaded?.redirect,
-        maxage: loaded?.maxage    
-      }
-    }
-  }
-  
 
   
   export const post = async function(params){
     //@ts-ignore
     const loaded = await action(params) as unknown as __Action_Result
 
-    return {
-      headers: loaded?.headers || {},
-      body: {
-        formError: loaded?.formError,
-        data: loaded?.data,  
-        errors: loaded?.errors,
-        status: loaded?.status,
+    // This is a browser fetch
+    if(params.headers && params.headers?.accept === 'application/json'){
+      return {
+        headers: loaded?.headers || {},
+        body: {
+          redirect: loaded?.redirect,
+          formError: loaded?.formError,
+          data: loaded?.data,  
+          errors: loaded?.errors,
+          status: loaded?.status,
+        }
       }
+    } 
+
+    // This is the default form behaviour, navigate back to form submitter
+    if(!loaded?.redirect){
+      return {
+        headers: {
+          ...(loaded?.headers || {}),
+          'Location': params.headers?.referer
+        },
+        status: loaded?.status || 302,
+        body: {}
+      }
+    }
+
+    return {
+      headers: {
+        ...(loaded?.headers || {}),
+        'Location': loaded?.redirect,
+      },
+      status: loaded?.status || 302,
+      body: {}
     }
   }
   

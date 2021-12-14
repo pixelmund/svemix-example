@@ -1,23 +1,15 @@
 <script context="module" lang="ts" ssr>
 	import { hashPassword } from '$lib/auth';
-	import type { Action, Loader } from 'svemix';
+	import type { Action } from 'svemix/server';
+	import type { User } from '@prisma/client';
 	import db from '$lib/db';
 
-	export const loader: Loader<any, Locals> = function ({ locals }) {
-		if (locals.session.data.isLoggedIn) {
-			return {
-				status: 302,
-				redirect: '/'
-			};
-		}
-
-		return {};
-	};
-
 	interface ActionData {
-		username: string;
-		email: string;
-		password: string;
+		username?: string;
+		email?: string;
+		password?: string;
+		isLoggedIn?: boolean;
+		user?: User;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
@@ -54,6 +46,13 @@
 			delete newUser?.passwordHash;
 
 			locals.session.data = { isLoggedIn: true, user: newUser };
+
+			return {
+				data: {
+					isLoggedIn: true,
+					user: newUser
+				}
+			};
 		} catch (error) {
 			return {
 				data: {
@@ -66,70 +65,69 @@
 				}
 			};
 		}
-
-		return {
-			data: {
-				username,
-				email,
-				password
-			}
-		};
 	};
 </script>
 
 <script lang="ts">
 	import Form from 'svemix/Form.svelte';
+	import { session } from '$app/stores';
 </script>
 
-<div class="max-w-xl w-full bg-gray-50 p-4 mt-8 mx-auto">
-	<Form let:data let:errors let:formError let:loading on:submit={(e) => console.log(e.detail)}>
-		<label class="block w-full">
+<Form
+	on:submit={(e) => {
+		if (e.detail?.data?.isLoggedIn) {
+			session.set({ isLoggedIn: true, user: e.detail?.data?.user });
+		}
+	}}
+	class="space-y-4"
+>
+	<div>
+		<label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+		<div class="mt-1">
 			<input
-				class="w-full py-3 px-3 rounded-md"
-				autocomplete="username"
-				placeholder="Username"
-				value={data?.username || ''}
-				type="text"
+				id="username"
 				name="username"
+				type="text"
+				autocomplete="username"
+				required
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 			/>
-			{#if errors?.username}
-				<p class="text-red-600 text-sm mt-2">
-					{errors.username}
-				</p>
-			{/if}
-		</label>
-		<label class="block w-full">
+		</div>
+	</div>
+
+	<div>
+		<label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+		<div class="mt-1">
 			<input
-				class="w-full py-3 px-3 rounded-md"
-				autocomplete="email"
-				placeholder="E-Mail"
-				type="email"
+				id="email"
 				name="email"
-				value={data?.email || ''}
+				type="email"
+				autocomplete="email"
+				required
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 			/>
-			{#if errors?.email}
-				<p class="text-red-600 text-sm mt-2">
-					{errors.email}
-				</p>
-			{/if}
-		</label>
-		<label class="block">
+		</div>
+	</div>
+
+	<div>
+		<label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
+		<div class="mt-1">
 			<input
-				class="w-full py-3 px-3 rounded-md"
-				autocomplete="new-password"
-				type="password"
+				id="password"
 				name="password"
-				value={data?.password || ''}
+				type="password"
+				autocomplete="current-password"
+				required
+				class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 			/>
-			{#if errors?.password}
-				<p class="text-red-600 text-sm mt-2">
-					{errors.password}
-				</p>
-			{/if}
-		</label>
+		</div>
+	</div>
+	<div>
 		<button
-			class="w-full py-2 text-center bg-indigo-400 text-white font-semibold uppercase rounded-md"
-			type="submit">Sign in</button
+			type="submit"
+			class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 		>
-	</Form>
-</div>
+			Sign in
+		</button>
+	</div>
+</Form>

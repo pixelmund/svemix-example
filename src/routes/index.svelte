@@ -1,5 +1,5 @@
 <script context="module" lang="ts" ssr>
-	import type { Loader } from 'svemix';
+	import type { Action, Loader } from 'svemix/server';
 	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
 
@@ -16,27 +16,27 @@
 			}
 		};
 	};
+
+	export const action: Action<any, any, Locals> = async function ({ locals, body }) {
+		const _action = body.get('_action');
+
+		if (_action === 'logout') {
+			locals.session.destroy();
+			return {
+				redirect: '/',
+				status: 302
+			};
+		}
+
+		return {};
+	};
 </script>
 
 <script lang="ts">
 	import { session } from '$app/stores';
+	import Form from 'svemix/Form.svelte';
 
 	export let posts: Props['posts'] = [];
-
-	function truncateString(str: string, length: number) {
-		if (str.length > length) {
-			return str.slice(0, length) + '...';
-		} else {
-			return str;
-		}
-	}
-
-	function readingTime(content: string) {
-		const wpm = 225;
-		const words = content.trim().split(/\s+/).length;
-		const time = Math.ceil(words / wpm);
-		return time;
-	}
 </script>
 
 <div class="relative bg-gray-50 min-h-screen pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
@@ -53,8 +53,19 @@
 		</div>
 		<div class="mt-4 flex justify-end items-center">
 			{#if $session.isLoggedIn}
-				<a class="text-indigo-600 uppercase tracking-wide font-semibold mr-6" href="/posts/new">Add New Post</a>
-				<a class="text-indigo-600 uppercase tracking-wide font-semibold" href="#">Logout</a>
+				<a class="text-indigo-600 uppercase tracking-wide font-semibold mr-6" href="/posts/new"
+					>Add New Post</a
+				>
+				<Form
+					on:submit={() => {
+						session.set({ isLoggedIn: false, user: null });
+					}}
+				>
+					<input type="hidden" name="_action" value="logout" />
+					<button class="text-indigo-600 uppercase tracking-wide font-semibold" type="submit"
+						>Logout</button
+					>
+				</Form>
 			{:else}
 				<a class="text-indigo-600 uppercase tracking-wide font-semibold" href="/auth/login">
 					Sign in
@@ -77,7 +88,7 @@
 								<a sveltekit:prefetch href="/posts/{post.slug}" class="block mt-2">
 									<p class="text-xl font-semibold text-gray-900">{post.title}</p>
 									<p class="mt-3 text-base text-gray-500">
-										{truncateString(post.content, 130)}
+										{post.excerpt}
 									</p>
 								</a>
 							</div>
@@ -88,7 +99,7 @@
 											{new Date(post.createdAt).toLocaleDateString()}
 										</time>
 										<span aria-hidden="true">&middot;</span>
-										<span>{readingTime(post.content)} min read</span>
+										<span>{post.read_time} min read</span>
 									</div>
 								</div>
 							</div>

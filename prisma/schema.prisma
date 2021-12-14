@@ -29,6 +29,8 @@ model Post {
   slug           String  @unique
   content        String
   featured_image String?
+  read_time      Int?    @default(5)
+  excerpt        String  @default("")
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
