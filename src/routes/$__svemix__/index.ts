@@ -20,7 +20,7 @@
 		};
 	};
 
-	export const action: Action<any, any, Locals> = async function ({ locals, body }) {
+	export const action: Action<any, Locals> = async function ({ locals, body }) {
 		const _action = body.get('_action');
 
 		if (_action === 'logout') {

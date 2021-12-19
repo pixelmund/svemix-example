@@ -17,7 +17,15 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {
-			plugins: [svemix({})]
+			plugins: [
+				svemix({
+					seoDefaults: {
+						title: 'Svemix Example',
+						description: 'This is the svemix blog example',
+						keywords: 'svemix,example,blog'
+					}
+				})
+			]
 		}
 	}
 };

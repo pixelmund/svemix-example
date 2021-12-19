@@ -1,5 +1,5 @@
 /// <reference types="@sveltejs/kit" />
 
 interface Locals {
-	session: import('svemix').Session<{ user: any, isLoggedIn: boolean }>;
+	session: import('svemix/session').PublicSession<{ user: import('@prisma/client').User, isLoggedIn: boolean }>;
 }

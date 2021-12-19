@@ -1,15 +1,12 @@
 <script context="module" lang="ts" ssr>
 	import { hashPassword } from '$lib/auth';
 	import type { Action } from 'svemix/server';
-	import type { User } from '@prisma/client';
 	import db from '$lib/db';
 
 	interface ActionData {
 		username?: string;
 		email?: string;
 		password?: string;
-		isLoggedIn?: boolean;
-		user?: User;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
@@ -27,7 +24,9 @@
 					password
 				},
 				errors: {
-					email: 'User with given E-Mail already exists'
+					email: 'User with given E-Mail already exists',
+					password: '',
+					username: ''
 				}
 			};
 		}
@@ -47,12 +46,7 @@
 
 			locals.session.data = { isLoggedIn: true, user: newUser };
 
-			return {
-				data: {
-					isLoggedIn: true,
-					user: newUser
-				}
-			};
+			return {};
 		} catch (error) {
 			return {
 				data: {
@@ -61,7 +55,9 @@
 					password
 				},
 				errors: {
-					username: 'Username already exists'
+					username: 'Username already exists',
+					email: '',
+					password: ''
 				}
 			};
 		}

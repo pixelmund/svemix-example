@@ -4,13 +4,10 @@
   
 	import { authenticateUser } from '$lib/auth';
 	import type { Action } from 'svemix/server';
-	import type { User } from '@prisma/client';
 
 	interface ActionData {
 		email?: string;
 		password?: string;
-		isLoggedIn?: boolean;
-		user?: User;
 	}
 
 	export const action: Action<ActionData> = async function ({ body, locals }) {
@@ -26,7 +23,10 @@
 						email,
 						password
 					},
-					errors
+					errors: {
+						email: errors.email,
+						password: errors.password
+					}
 				};
 			}
 

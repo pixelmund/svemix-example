@@ -18,21 +18,19 @@ specifiers:
   secure-password: ^4.0.0
   svelte: ^3.44.0
   svelte-check: ^2.2.6
-  svelte-kit-cookie-session: ^1.4.0
   svelte-preprocess: ^4.9.8
-  svemix: 0.3.0-next.3
+  svemix: ^0.3.5
   tailwindcss: ^3.0.0
   ts-node: ^10.4.0
   tslib: ^2.3.1
   typescript: ^4.4.3
-  vite-plugin-svemix: next
+  vite-plugin-svemix: ^0.3.5
 
 dependencies:
   '@prisma/client': 3.6.0_prisma@3.6.0
   '@types/secure-password': 3.1.1
   secure-password: 4.0.0
-  svelte-kit-cookie-session: 1.4.0
-  svemix: 0.3.0-next.3
+  svemix: 0.3.5
 
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.4
@@ -54,7 +52,7 @@ devDependencies:
   ts-node: 10.4.0_typescript@4.5.3
   tslib: 2.3.1
   typescript: 4.5.3
-  vite-plugin-svemix: 0.3.0-next.2
+  vite-plugin-svemix: 0.3.5
 
 packages:
 
@@ -1830,10 +1828,6 @@ packages:
       svelte: 3.44.2
     dev: true
 
-  /svelte-kit-cookie-session/1.4.0:
-    resolution: {integrity: sha512-SDVf9QZY8lxxJr3Ih+qoVIq0oam73wSjf1z96b7ddIgq/nNpYeVLnNrgWgAtZHuQGPLDBgi5hI4W/yYTBOoQ2Q==}
-    dev: false
-
   /svelte-preprocess/4.9.8_5ab7b0cf18f33888c85a14ebc175e398:
     resolution: {integrity: sha512-EQS/oRZzMtYdAprppZxY3HcysKh11w54MgA63ybtL+TAZ4hVqYOnhw41JVJjWN9dhPnNjjLzvbZ2tMhTsla1Og==}
     engines: {node: '>= 9.11.2'}
@@ -1892,10 +1886,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /svemix/0.3.0-next.3:
-    resolution: {integrity: sha512-QBjYA3FjXIhOVAOzF9EXxEy8JWX5xsrFyyhuVJMOcobEOhf4l81zP/111vHcK4UIQgMtUcFN8Q1FL/AZASvNPg==}
-    dependencies:
-      svelte-kit-cookie-session: 1.4.0
+  /svemix/0.3.5:
+    resolution: {integrity: sha512-pEfBaZc1uFi2uLOysa2zXP2V6u+pCUBAwn1DMtIaHZXr2hr3HhI1aAIgYKLuGY3TJsp46jbH3ErabajJ8NJkJA==}
     dev: false
 
   /svgo/2.8.0:
@@ -2015,8 +2007,8 @@ packages:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
     dev: true
 
-  /vite-plugin-svemix/0.3.0-next.2:
-    resolution: {integrity: sha512-TiBveVmayJQv9ThwAOO8OBJjw3lEePsrDdS/C0kjtNqxS53wf/EEs4GxqGuKXgyATiO0eIg+vrq1uTvdWvoAlg==}
+  /vite-plugin-svemix/0.3.5:
+    resolution: {integrity: sha512-7Z060F0VVoPjfSnsANL0veZLEsu1OHBSEiRqUTX7/VbK0/TI8W52WVfOjlxmtncumTboVKutz/zalbb1TriEqw==}
     dev: true
 
   /vite/2.7.2:

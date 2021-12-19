@@ -12,7 +12,6 @@
 
 	export const loader: Loader<Props, Locals> = async function ({ params }) {
 		try {
-
 			const post = await db.post.findUnique({
 				where: { slug: params.slug },
 				rejectOnNotFound: false
