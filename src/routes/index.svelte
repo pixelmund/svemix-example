@@ -22,10 +22,6 @@
 
 		if (_action === 'logout') {
 			locals.session.destroy();
-			return {
-				redirect: '/',
-				status: 302
-			};
 		}
 
 		return {};
@@ -56,11 +52,7 @@
 				<a class="text-indigo-600 uppercase tracking-wide font-semibold mr-6" href="/posts/new"
 					>Add New Post</a
 				>
-				<Form
-					on:submit={() => {
-						session.set({ isLoggedIn: false, user: null });
-					}}
-				>
+				<Form>
 					<input type="hidden" name="_action" value="logout" />
 					<button class="text-indigo-600 uppercase tracking-wide font-semibold" type="submit"
 						>Logout</button

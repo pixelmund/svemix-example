@@ -70,17 +70,9 @@
 
 <script lang="ts">
 	import Form from 'svemix/Form.svelte';
-	import { session } from '$app/stores';
 </script>
 
-<Form
-	on:submit={(e) => {
-		if (e.detail?.data?.isLoggedIn) {
-			session.set({ isLoggedIn: true, user: e.detail?.data?.user });
-		}
-	}}
-	class="space-y-4"
->
+<Form class="space-y-4">
 	<div>
 		<label for="username" class="block text-sm font-medium text-gray-700">Username</label>
 		<div class="mt-1">

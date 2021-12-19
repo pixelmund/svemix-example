@@ -51,7 +51,6 @@
 
 <script lang="ts">
 	import { Form } from 'svemix';
-	import { session } from '$app/stores';
 </script>
 
 <Form
@@ -60,11 +59,6 @@
 			email: data.email.length === 0 ? 'Required field' : '',
 			password: data.password.length < 6 ? 'Password must be 6 chars long' : ''
 		};
-	}}
-	on:submit={(e) => {
-		if (e.detail?.data?.isLoggedIn) {
-			session.set({ isLoggedIn: true, user: e.detail?.data?.user });
-		}
 	}}
 	class="space-y-6"
 >

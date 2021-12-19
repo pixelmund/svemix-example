@@ -20,19 +20,19 @@ specifiers:
   svelte-check: ^2.2.6
   svelte-kit-cookie-session: ^1.4.0
   svelte-preprocess: ^4.9.8
-  svemix: 0.2.1
+  svemix: 0.3.0-next.3
   tailwindcss: ^3.0.0
   ts-node: ^10.4.0
   tslib: ^2.3.1
   typescript: ^4.4.3
-  vite-plugin-svemix: ^0.2.1
+  vite-plugin-svemix: next
 
 dependencies:
   '@prisma/client': 3.6.0_prisma@3.6.0
   '@types/secure-password': 3.1.1
   secure-password: 4.0.0
   svelte-kit-cookie-session: 1.4.0
-  svemix: 0.2.1
+  svemix: 0.3.0-next.3
 
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.4
@@ -54,7 +54,7 @@ devDependencies:
   ts-node: 10.4.0_typescript@4.5.3
   tslib: 2.3.1
   typescript: 4.5.3
-  vite-plugin-svemix: 0.2.1
+  vite-plugin-svemix: 0.3.0-next.2
 
 packages:
 
@@ -1892,8 +1892,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /svemix/0.2.1:
-    resolution: {integrity: sha512-6Vt2v7+gk95GrPXcjO2+8/zWnbCP1f6YBFNf64QNN9VuUpI1ke5rBekbXXEkn3+qvV7LkwiZbZ4Rlm9tJFXa7w==}
+  /svemix/0.3.0-next.3:
+    resolution: {integrity: sha512-QBjYA3FjXIhOVAOzF9EXxEy8JWX5xsrFyyhuVJMOcobEOhf4l81zP/111vHcK4UIQgMtUcFN8Q1FL/AZASvNPg==}
     dependencies:
       svelte-kit-cookie-session: 1.4.0
     dev: false
@@ -2015,8 +2015,8 @@ packages:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
     dev: true
 
-  /vite-plugin-svemix/0.2.1:
-    resolution: {integrity: sha512-u5QWtsZ+12+Ujbc6nxCp+gFJyqSaKEDDRn9UQ1vcH8T/XrA8txd04O0FsyCSo3y2r6jkGfR+SC7cOEijixd1mQ==}
+  /vite-plugin-svemix/0.3.0-next.2:
+    resolution: {integrity: sha512-TiBveVmayJQv9ThwAOO8OBJjw3lEePsrDdS/C0kjtNqxS53wf/EEs4GxqGuKXgyATiO0eIg+vrq1uTvdWvoAlg==}
     dev: true
 
   /vite/2.7.2:

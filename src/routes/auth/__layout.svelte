@@ -2,7 +2,7 @@
 	import type { Loader } from 'svemix/server';
 
 	export const loader: Loader<any, Locals> = function ({ locals }) {
-		if (locals.session.data.isLoggedIn) {
+		if (locals.session.data?.isLoggedIn) {
 			return {
 				status: 302,
 				redirect: '/'
@@ -14,14 +14,11 @@
 </script>
 
 <script lang="ts">
-	import { page, navigating, session } from '$app/stores';
+	import { page, navigating } from '$app/stores';
 	import { onDestroy } from 'svelte';
 
 	let blurred = false;
 	let timeout: NodeJS.Timeout;
-
-	// We have to subscribe to the session if we want to set it on login/register
-	$: __session = $session
 
 	$: signIn = $page.path === '/auth/login';
 	$: if (
