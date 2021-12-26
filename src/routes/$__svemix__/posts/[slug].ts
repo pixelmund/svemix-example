@@ -38,8 +38,8 @@
 	};
 
 	export const metadata: MetaFunction<Props> = (props) => ({
-		title: props?.post?.title,
-		description: props?.post?.content ? props?.post?.content.slice(0, 150) : ''
+		title: props.post.title,
+		description: props.post.excerpt
 	});
 
 

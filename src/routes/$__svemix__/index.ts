@@ -8,13 +8,33 @@
 
 	interface Props {
 		posts: Post[];
+		pageInfo: {
+			totalPages: number;
+			currentPage: number;
+			totalCount: number;
+		};
 	}
 
-	export const loader: Loader<Props, Locals> = async function ({}) {
-		const posts = await db.post.findMany({ take: 9, orderBy: { createdAt: 'desc' } });
+	const TAKE = 6;
+
+	export const loader: Loader<Props, Locals> = async function ({ query }) {
+		const page = parseInt(query.get('page')) || 1;
+		const skip = (page - 1) * TAKE;
+
+		const [totalCount, posts] = await db.$transaction([
+			db.post.count(),
+			db.post.findMany({ take: TAKE, skip, orderBy: { createdAt: 'desc' } })
+		]);
+
+		const totalPages = Math.ceil(totalCount / TAKE);
 
 		return {
 			props: {
+				pageInfo: {
+					totalPages,
+					currentPage: page,
+					totalCount
+				},
 				posts
 			}
 		};

@@ -5,13 +5,33 @@
 
 	interface Props {
 		posts: Post[];
+		pageInfo: {
+			totalPages: number;
+			currentPage: number;
+			totalCount: number;
+		};
 	}
 
-	export const loader: Loader<Props, Locals> = async function ({}) {
-		const posts = await db.post.findMany({ take: 9, orderBy: { createdAt: 'desc' } });
+	const TAKE = 6;
+
+	export const loader: Loader<Props, Locals> = async function ({ query }) {
+		const page = parseInt(query.get('page')) || 1;
+		const skip = (page - 1) * TAKE;
+
+		const [totalCount, posts] = await db.$transaction([
+			db.post.count(),
+			db.post.findMany({ take: TAKE, skip, orderBy: { createdAt: 'desc' } })
+		]);
+
+		const totalPages = Math.ceil(totalCount / TAKE);
 
 		return {
 			props: {
+				pageInfo: {
+					totalPages,
+					currentPage: page,
+					totalCount
+				},
 				posts
 			}
 		};
@@ -33,6 +53,7 @@
 	import Form from 'svemix/Form.svelte';
 
 	export let posts: Props['posts'] = [];
+	export let pageInfo: Props['pageInfo'];
 </script>
 
 <div class="relative bg-gray-50 min-h-screen pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
@@ -47,22 +68,29 @@
 				ducimus sed.
 			</p>
 		</div>
-		<div class="mt-4 flex justify-end items-center">
-			{#if $session.isLoggedIn}
-				<a class="text-indigo-600 uppercase tracking-wide font-semibold mr-6" href="/posts/new"
-					>Add New Post</a
-				>
-				<Form>
-					<input type="hidden" name="_action" value="logout" />
-					<button class="text-indigo-600 uppercase tracking-wide font-semibold" type="submit"
-						>Logout</button
+		<div class="mt-4 flex justify-between items-center">
+			<h4 class="text-lg font-semibold">
+				{pageInfo.totalCount} posts
+			</h4>
+			<div class="flex items-center">
+				{#if $session.isLoggedIn}
+					<a
+						sveltekit:prefetch
+						class="text-indigo-600 uppercase tracking-wide font-semibold mr-6"
+						href="/posts/new">Add New Post</a
 					>
-				</Form>
-			{:else}
-				<a class="text-indigo-600 uppercase tracking-wide font-semibold" href="/auth/login">
-					Sign in
-				</a>
-			{/if}
+					<Form>
+						<input type="hidden" name="_action" value="logout" />
+						<button class="text-indigo-600 uppercase tracking-wide font-semibold" type="submit"
+							>Logout</button
+						>
+					</Form>
+				{:else}
+					<a class="text-indigo-600 uppercase tracking-wide font-semibold" href="/auth/login">
+						Sign in
+					</a>
+				{/if}
+			</div>
 		</div>
 		<div class="mt-8 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
 			{#if posts && posts.length > 0}
@@ -99,6 +127,17 @@
 					</div>
 				{/each}
 			{/if}
+		</div>
+		<div class="flex justify-center mt-4 items-center">
+			{#each { length: pageInfo.totalPages } as _itm, index}
+				<a
+					class="py-1 px-3 bg-gray-200 mx-1 font-semibold rounded-md {index ===
+					pageInfo.currentPage - 1
+						? 'text-indigo-600'
+						: ''}"
+					href="/?page={index + 1}">{index + 1}</a
+				>
+			{/each}
 		</div>
 	</div>
 </div>
