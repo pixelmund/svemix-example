@@ -14,8 +14,8 @@
 
 	const TAKE = 6;
 
-	export const loader: Loader<Props, Locals> = async function ({ query }) {
-		const page = parseInt(query.get('page')) || 1;
+	export const loader: Loader<Props, Locals> = async function ({ url }) {
+		const page = parseInt(url.searchParams.get('page')) || 1;
 		const skip = (page - 1) * TAKE;
 
 		const [totalCount, posts] = await db.$transaction([

@@ -20,10 +20,10 @@
 	let blurred = false;
 	let timeout: NodeJS.Timeout;
 
-	$: signIn = $page.path === '/auth/login';
+	$: signIn = $page.url.pathname === '/auth/login';
 	$: if (
-		($navigating?.from.path === '/auth/register' && $navigating?.to.path === '/auth/login') ||
-		($navigating?.from.path === '/auth/login' && $navigating?.to.path === '/auth/register')
+		($navigating?.from.pathname === '/auth/register' && $navigating?.to.pathname === '/auth/login') ||
+		($navigating?.from.pathname === '/auth/login' && $navigating?.to.pathname === '/auth/register')
 	) {
 		blurred = true;
 	} else {
