@@ -18,13 +18,7 @@ const config = {
 		target: '#svelte',
 		vite: {
 			plugins: [
-				svemix({
-					seoDefaults: {
-						title: 'Svemix Example',
-						description: 'This is the svemix blog example',
-						keywords: 'svemix,example,blog'
-					}
-				})
+				svemix()
 			]
 		}
 	}
