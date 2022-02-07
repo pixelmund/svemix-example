@@ -1,10 +1,9 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@prisma/client': ^3.7.0
-  '@sveltejs/adapter-auto': next
+  '@prisma/client': ^3.9.1
   '@sveltejs/adapter-node': ^1.0.0-next.58
-  '@sveltejs/kit': ^1.0.0-next.211
+  '@sveltejs/kit': next
   '@tailwindcss/forms': ^0.4.0
   '@tailwindcss/typography': ^0.5.0
   '@types/node': ^17.0.5
@@ -15,28 +14,26 @@ specifiers:
   postcss-load-config: ^3.1.0
   prettier: ^2.5.1
   prettier-plugin-svelte: ^2.5.1
-  prisma: ^3.7.0
+  prisma: ^3.9.1
   secure-password: ^4.0.0
   svelte: ^3.44.3
   svelte-check: ^2.2.11
   svelte-preprocess: ^4.10.1
-  svemix: ^0.4.2
+  svemix: ^0.7.1
   tailwindcss: ^3.0.8
   ts-node: ^10.4.0
   tslib: ^2.3.1
   typescript: ^4.5.4
-  vite-plugin-svemix: ^0.4.2
 
 dependencies:
-  '@prisma/client': 3.7.0_prisma@3.7.0
+  '@prisma/client': 3.9.1_prisma@3.9.1
   '@types/secure-password': 3.1.1
   secure-password: 4.0.0
-  svemix: 0.4.2
+  svemix: 0.7.1
 
 devDependencies:
-  '@sveltejs/adapter-auto': 1.0.0-next.7
   '@sveltejs/adapter-node': 1.0.0-next.58
-  '@sveltejs/kit': 1.0.0-next.211_svelte@3.44.3
+  '@sveltejs/kit': 1.0.0-next.260_svelte@3.44.3
   '@tailwindcss/forms': 0.4.0_tailwindcss@3.0.8
   '@tailwindcss/typography': 0.5.0_tailwindcss@3.0.8
   '@types/node': 17.0.5
@@ -46,7 +43,7 @@ devDependencies:
   postcss-load-config: 3.1.0_ts-node@10.4.0
   prettier: 2.5.1
   prettier-plugin-svelte: 2.5.1_prettier@2.5.1+svelte@3.44.3
-  prisma: 3.7.0
+  prisma: 3.9.1
   svelte: 3.44.3
   svelte-check: 2.2.11_780263383bd82c24c3a39ba88c8c2aa6
   svelte-preprocess: 4.10.1_2744a29ed8b290f6e2130b2432ae0c01
@@ -54,7 +51,6 @@ devDependencies:
   ts-node: 10.4.0_bad060d5f9aca5284661d88d739ba15b
   tslib: 2.3.1
   typescript: 4.5.4
-  vite-plugin-svemix: 0.4.2
 
 packages:
 
@@ -91,10 +87,6 @@ packages:
       '@cspotcode/source-map-consumer': 0.8.0
     dev: true
 
-  /@iarna/toml/2.2.5:
-    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
-    dev: true
-
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -116,8 +108,8 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@prisma/client/3.7.0_prisma@3.7.0:
-    resolution: {integrity: sha512-fUJMvBOX5C7JPc0e3CJD6Gbelbu4dMJB4ScYpiht8HMUnRShw20ULOipTopjNtl6ekHQJ4muI7pXlQxWS9nMbw==}
+  /@prisma/client/3.9.1_prisma@3.9.1:
+    resolution: {integrity: sha512-aLwfXKLvL+loQ0IuPPCXkcq8cXBg1IeoHHa5lqQu3dJHdj45wnislA/Ny4UxRQjD5FXqrfAb8sWtF+jhdmjFTg==}
     engines: {node: '>=12.6'}
     requiresBuild: true
     peerDependencies:
@@ -126,16 +118,16 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f
-      prisma: 3.7.0
+      '@prisma/engines-version': 3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009
+      prisma: 3.9.1
     dev: false
 
-  /@prisma/engines-version/3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f:
-    resolution: {integrity: sha512-+qx2b+HK7BKF4VCa0LZ/t1QCXsu6SmvhUQyJkOD2aPpmOzket4fEnSKQZSB0i5tl7rwCDsvAiSeK8o7rf+yvwg==}
+  /@prisma/engines-version/3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009:
+    resolution: {integrity: sha512-5Dh+qTDhpPR66w6NNAnPs+/W/Qt4r1DSd+qhfPFcDThUK4uxoZKGlPb2IYQn5LL+18aIGnmteDf7BnVMmvBNSQ==}
     dev: false
 
-  /@prisma/engines/3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f:
-    resolution: {integrity: sha512-W549ub5NlgexNhR8EFstA/UwAWq3Zq0w9aNkraqsozVCt2CsX+lK4TK7IW5OZVSnxHwRjrgEAt3r9yPy8nZQRg==}
+  /@prisma/engines/3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009:
+    resolution: {integrity: sha512-qM+uJbkelB21bnK44gYE049YTHIjHysOuj0mj5U2gDGyNLfmiazlggzFPCgEjgme4U5YB2tYs6Z5Hq08Kl8pjA==}
     requiresBuild: true
     dev: true
 
@@ -147,42 +139,14 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /@sveltejs/adapter-auto/1.0.0-next.7:
-    resolution: {integrity: sha512-PGuTgW6bdzKgJJy8a12OCN9ob7/I8ixfWjbBVpKpbjHGc5NmNcS70LoTU55BgVTI7ELp9VoZaJsGFoYp+X5WEw==}
-    dependencies:
-      '@sveltejs/adapter-cloudflare': 1.0.0-next.5
-      '@sveltejs/adapter-netlify': 1.0.0-next.37
-      '@sveltejs/adapter-vercel': 1.0.0-next.34
-    dev: true
-
-  /@sveltejs/adapter-cloudflare/1.0.0-next.5:
-    resolution: {integrity: sha512-I7kLcINJz0zik+ufb+IAWSn/EHxdTdmGF0M3tizd87Cxw2ke7N/A6XF8YrYDgZ/4yrAcZnR8Texas/5WxPYZ6g==}
-    dependencies:
-      esbuild: 0.13.15
-    dev: true
-
-  /@sveltejs/adapter-netlify/1.0.0-next.37:
-    resolution: {integrity: sha512-Advp53rLMsi9Kg3GYVwWFTmqzIIKCJ2WTrm2zx12Q37RrO+HaY2R+sRMGGGrjD2fk6w1qR7WR9Qt9p0n3moUbw==}
-    dependencies:
-      '@iarna/toml': 2.2.5
-      esbuild: 0.13.15
-      tiny-glob: 0.2.9
-    dev: true
-
   /@sveltejs/adapter-node/1.0.0-next.58:
     resolution: {integrity: sha512-XU+QV5qIhHE8hNu2DmhWdpW4m5O7yq/Dw12eHI2rzZkSsiLPzIryKK7221vmjGCRUVmsLHeBf2VPk9T4pKM6Aw==}
     dependencies:
       tiny-glob: 0.2.9
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.0-next.34:
-    resolution: {integrity: sha512-TQDQK2wjDQkoSkNVuFVu4a/hzqKIWCGL15Zi7zQv740ZSd6F2Lg9QHlFfEXMglu6mhoep084h6JiLtzavNiZeA==}
-    dependencies:
-      esbuild: 0.13.15
-    dev: true
-
-  /@sveltejs/kit/1.0.0-next.211_svelte@3.44.3:
-    resolution: {integrity: sha512-jS28R40H6BypK5rSVUzNmQW3NaBTFijj4fJPEtx8YeSLuzqm7ZGl3wwqF+FRxisP6oyz2GkYSARRxzemDOfn9A==}
+  /@sveltejs/kit/1.0.0-next.260_svelte@3.44.3:
+    resolution: {integrity: sha512-0EEkGD0BpZdgRm9UoOnldS8iDFFhT2ixN3oQ/9DblGKNo7cz/FEQmKoYYIOOVYI3XyurwccWORPEpTTA4l9Oew==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -1600,15 +1564,14 @@ packages:
     resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
 
-  /prisma/3.7.0:
-    resolution: {integrity: sha512-pzgc95msPLcCHqOli7Hnabu/GRfSGSUWl5s2P6N13T/rgMB+NNeKbxCmzQiZT2yLOeLEPivV6YrW1oeQIwJxcg==}
+  /prisma/3.9.1:
+    resolution: {integrity: sha512-IGcJAu5LzlFv+i+NNhOEh1J1xVVttsVdRBxmrMN7eIH+7mRN6L89Hz1npUAiz4jOpNlHC7n9QwaOYZGxTqlwQw==}
     engines: {node: '>=12.6'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f
+      '@prisma/engines': 3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009
     dev: true
 
   /queue-microtask/1.2.3:
@@ -1871,8 +1834,10 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /svemix/0.4.2:
-    resolution: {integrity: sha512-by06WxAeAB+n96nP7LIYvTpS96HNq3ea3Gg/32gH6ka3SU7OajqTOTqMQHqqkM/lz36gx9nsfppM36yUHSMSAQ==}
+  /svemix/0.7.1:
+    resolution: {integrity: sha512-deb3he6H5F6JFX4fAXbZUrYolIUUPUBowJWmgAVUCHv+slLrjBx9eUQo7s6KDGvKgb5ofWUrhMl1AsX2jD3TsA==}
+    dependencies:
+      prettier: 2.5.1
     dev: false
 
   /svgo/2.8.0:
@@ -1991,10 +1956,6 @@ packages:
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
-    dev: true
-
-  /vite-plugin-svemix/0.4.2:
-    resolution: {integrity: sha512-S+RPxRS7aDfin71ipTZXjq7M18TVpMNQThLkNO0tzVZ6EW7iWK8+KWzYvgAlRr7Abx9somLj5HCsHkhrD0UWRg==}
     dev: true
 
   /vite/2.7.10:

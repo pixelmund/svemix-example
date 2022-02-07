@@ -1,5 +1,5 @@
 <script context="module" lang="ts" ssr>
-	import type { Loader, MetaFunction } from 'svemix/server';
+	import type { Loader } from 'svemix/server';
 	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
 
@@ -7,7 +7,7 @@
 		post: Post;
 	}
 
-	export const loader: Loader<Props, Locals> = async function ({ params }) {
+	export const loader: Loader<Props> = async function ({ params }) {
 		try {
 			const post = await db.post.findUnique({
 				where: { slug: params.slug },
@@ -22,8 +22,12 @@
 			}
 
 			return {
-				props: {
+				data: {
 					post
+				},
+				metadata: {
+					title: post.title,
+					description: post.excerpt
 				}
 			};
 		} catch (error) {
@@ -33,15 +37,10 @@
 			};
 		}
 	};
-
-	export const metadata: MetaFunction<Props> = (props) => ({
-		title: props.post.title,
-		description: props.post.excerpt
-	});
 </script>
 
 <script lang="ts">
-	export let post: Props['post'];
+	export let data: Props;
 </script>
 
 <div class="relative py-16 bg-white overflow-hidden">
@@ -55,11 +54,11 @@
 				<span
 					class="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-5xl"
 				>
-					{post.title}
+					{data.post.title}
 				</span>
 			</h1>
 			<p class="mt-8 text-xl text-gray-500 leading-8">
-				{post.content}
+				{data.post.content}
 			</p>
 			<a
 				class="mt-8 text-indigo-600 font-semibold tracking-wide uppercase block text-center hover:text-indigo-500"

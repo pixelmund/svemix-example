@@ -14,7 +14,7 @@
 
 	const TAKE = 6;
 
-	export const loader: Loader<Props, Locals> = async function ({ url }) {
+	export const loader: Loader<Props> = async function ({ url }) {
 		const page = parseInt(url.searchParams.get('page')) || 1;
 		const skip = (page - 1) * TAKE;
 
@@ -26,7 +26,7 @@
 		const totalPages = Math.ceil(totalCount / TAKE);
 
 		return {
-			props: {
+			data: {
 				pageInfo: {
 					totalPages,
 					currentPage: page,
@@ -37,7 +37,9 @@
 		};
 	};
 
-	export const action: Action<any, Locals> = async function ({ locals, body }) {
+	export const action: Action<any> = async function ({ locals, request }) {
+		const body = await request.formData();
+
 		const _action = body.get('_action');
 
 		if (_action === 'logout') {
@@ -50,10 +52,9 @@
 
 <script lang="ts">
 	import { session } from '$app/stores';
-	import Form from 'svemix/Form.svelte';
+	import { Form } from 'svemix';
 
-	export let posts: Props['posts'] = [];
-	export let pageInfo: Props['pageInfo'];
+	export let data: Props;
 </script>
 
 <div class="relative bg-gray-50 min-h-screen pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
@@ -70,7 +71,7 @@
 		</div>
 		<div class="mt-4 flex justify-between items-center">
 			<h4 class="text-lg font-semibold">
-				{pageInfo.totalCount} posts
+				{data.pageInfo.totalCount} posts
 			</h4>
 			<div class="flex items-center">
 				{#if $session.isLoggedIn}
@@ -93,8 +94,8 @@
 			</div>
 		</div>
 		<div class="mt-8 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
-			{#if posts && posts.length > 0}
-				{#each posts as post (post.slug)}
+			{#if data.posts && data.posts.length > 0}
+				{#each data.posts as post (post.slug)}
 					<div class="flex flex-col rounded-lg shadow-lg overflow-hidden">
 						<div class="flex-shrink-0">
 							<img
@@ -129,10 +130,10 @@
 			{/if}
 		</div>
 		<div class="flex justify-center mt-4 items-center">
-			{#each { length: pageInfo.totalPages } as _itm, index}
+			{#each { length: data.pageInfo.totalPages } as _itm, index}
 				<a
 					class="py-1 px-3 bg-gray-200 mx-1 font-semibold rounded-md {index ===
-					pageInfo.currentPage - 1
+					data.pageInfo.currentPage - 1
 						? 'text-indigo-600'
 						: ''}"
 					href="/?page={index + 1}">{index + 1}</a

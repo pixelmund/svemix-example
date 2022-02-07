@@ -1,8 +1,8 @@
-<script context="module" lang="ts" ssr>
-	import type { Loader } from 'svemix/server';
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
 
-	export const loader: Loader<any, Locals> = function ({ locals }) {
-		if (locals.session.data?.isLoggedIn) {
+	export const load: Load = function ({ session }) {
+		if (session?.isLoggedIn) {
 			return {
 				status: 302,
 				redirect: '/'
@@ -22,7 +22,8 @@
 
 	$: signIn = $page.url.pathname === '/auth/login';
 	$: if (
-		($navigating?.from.pathname === '/auth/register' && $navigating?.to.pathname === '/auth/login') ||
+		($navigating?.from.pathname === '/auth/register' &&
+			$navigating?.to.pathname === '/auth/login') ||
 		($navigating?.from.pathname === '/auth/login' && $navigating?.to.pathname === '/auth/register')
 	) {
 		blurred = true;
