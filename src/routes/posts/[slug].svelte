@@ -3,11 +3,11 @@
 	import type { Post } from '@prisma/client';
 	import db from '$lib/db';
 
-	interface Props {
+	interface LoaderData {
 		post: Post;
 	}
 
-	export const loader: Loader<Props> = async function ({ params }) {
+	export const loader: Loader<LoaderData> = async function ({ params }) {
 		try {
 			const post = await db.post.findUnique({
 				where: { slug: params.slug },
@@ -15,32 +15,26 @@
 			});
 
 			if (!post) {
-				return {
-					status: 404,
-					error: 'Post not found'
-				};
+				throw new Error('Post not found');
 			}
 
 			return {
-				data: {
-					post
-				},
+				post,
 				metadata: {
 					title: post.title,
 					description: post.excerpt
 				}
 			};
 		} catch (error) {
-			return {
-				status: 500,
-				error
-			};
+			throw new Error(error);
 		}
 	};
 </script>
 
 <script lang="ts">
-	export let data: Props;
+	import { getLoaderData } from 'svemix';
+
+	const data = getLoaderData<LoaderData>();
 </script>
 
 <div class="relative py-16 bg-white overflow-hidden">
@@ -54,11 +48,11 @@
 				<span
 					class="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-5xl"
 				>
-					{data.post.title}
+					{$data.post.title}
 				</span>
 			</h1>
 			<p class="mt-8 text-xl text-gray-500 leading-8">
-				{data.post.content}
+				{$data.post.content}
 			</p>
 			<a
 				class="mt-8 text-indigo-600 font-semibold tracking-wide uppercase block text-center hover:text-indigo-500"

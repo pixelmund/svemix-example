@@ -4,11 +4,11 @@ import type { Loader } from 'svemix/server';
 import type { Post } from '@prisma/client';
 import db from '$lib/db';
 
-interface Props {
+interface LoaderData {
 	post: Post;
 }
 
-export const loader: Loader<Props> = async function ({ params }) {
+export const loader: Loader<LoaderData> = async function ({ params }) {
 	try {
 		const post = await db.post.findUnique({
 			where: { slug: params.slug },
@@ -16,26 +16,18 @@ export const loader: Loader<Props> = async function ({ params }) {
 		});
 
 		if (!post) {
-			return {
-				status: 404,
-				error: 'Post not found'
-			};
+			throw new Error('Post not found');
 		}
 
 		return {
-			data: {
-				post
-			},
+			post,
 			metadata: {
 				title: post.title,
 				description: post.excerpt
 			}
 		};
 	} catch (error) {
-		return {
-			status: 500,
-			error
-		};
+		throw new Error(error);
 	}
 };
 

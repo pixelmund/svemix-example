@@ -4,7 +4,7 @@ import type { Action, Loader } from 'svemix/server';
 import type { Post } from '@prisma/client';
 import db from '$lib/db';
 
-interface Props {
+interface LoaderData {
 	posts: Post[];
 	pageInfo: {
 		totalPages: number;
@@ -15,7 +15,7 @@ interface Props {
 
 const TAKE = 6;
 
-export const loader: Loader<Props> = async function ({ url }) {
+export const loader: Loader<LoaderData> = async function ({ url }) {
 	const page = parseInt(url.searchParams.get('page')) || 1;
 	const skip = (page - 1) * TAKE;
 
@@ -27,14 +27,12 @@ export const loader: Loader<Props> = async function ({ url }) {
 	const totalPages = Math.ceil(totalCount / TAKE);
 
 	return {
-		data: {
-			pageInfo: {
-				totalPages,
-				currentPage: page,
-				totalCount
-			},
-			posts
-		}
+		pageInfo: {
+			totalPages,
+			currentPage: page,
+			totalCount
+		},
+		posts
 	};
 };
 

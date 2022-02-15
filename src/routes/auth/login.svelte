@@ -2,12 +2,7 @@
 	import { authenticateUser } from '$lib/auth';
 	import type { Action } from 'svemix/server';
 
-	interface ActionData {
-		email?: string;
-		password?: string;
-	}
-
-	export const action: Action<ActionData> = async function ({ request, locals }) {
+	export const action: Action = async function ({ request, locals }) {
 		const body = await request.formData();
 
 		const email = body.get('email') as string;
@@ -56,13 +51,15 @@
 </script>
 
 <Form
-	let:errors
+	let:data
 	let:submitting
-	validate={({ data }) => {
-		const email = data.get('email') || '';
-		const password = data.get('password') || '';
+	validate={(formData) => {
+		const email = formData.get('email') || '';
+		const password = formData.get('password') || '';
 		return {
+			// @ts-ignore
 			email: email.length === 0 ? 'Required field' : '',
+			// @ts-ignore
 			password: password.length < 6 ? 'Password must be 6 chars long' : ''
 		};
 	}}
@@ -80,8 +77,8 @@
 					class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 				/>
 			</div>
-			{#if errors?.email && errors?.email.length > 0}
-				<p class="text-red-500 text-xs mt-3 font-semibold">{errors.email}</p>
+			{#if data.errors?.email && data.errors?.email.length > 0}
+				<p class="text-red-500 text-xs mt-3 font-semibold">{data.errors.email}</p>
 			{/if}
 		</div>
 
@@ -97,8 +94,8 @@
 					class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 				/>
 			</div>
-			{#if errors?.password && errors?.password.length > 0}
-				<p class="text-red-500 text-xs mt-3 font-semibold">{errors.password}</p>
+			{#if data.errors?.password && data.errors?.password.length > 0}
+				<p class="text-red-500 text-xs mt-3 font-semibold">{data.errors.password}</p>
 			{/if}
 		</div>
 		<div>

@@ -11,7 +11,7 @@ interface ActionData {
 	content: string;
 }
 
-export const action: Action<ActionData> = async ({ request, locals }) => {
+export const action: Action = async ({ request, locals }) => {
 	const body = await request.formData();
 
 	const title = body.get('title') as string;

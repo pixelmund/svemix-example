@@ -3,12 +3,7 @@ import { get as __get, post as __post } from 'svemix/server';
 import { authenticateUser } from '$lib/auth';
 import type { Action } from 'svemix/server';
 
-interface ActionData {
-	email?: string;
-	password?: string;
-}
-
-export const action: Action<ActionData> = async function ({ request, locals }) {
+export const action: Action = async function ({ request, locals }) {
 	const body = await request.formData();
 
 	const email = body.get('email') as string;
