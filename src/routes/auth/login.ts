@@ -9,19 +9,18 @@ export const action: Action = async function ({ request, locals }) {
 	const email = body.get('email') as string;
 	const password = body.get('password') as string;
 
+	const values = {
+		email,
+		password
+	};
+
 	try {
 		const { user, errors } = await authenticateUser(email, password);
 
 		if (errors.email || errors.password) {
 			return {
-				values: {
-					email,
-					password
-				},
-				errors: {
-					email: errors.email,
-					password: errors.password
-				}
+				values,
+				errors
 			};
 		}
 
@@ -29,18 +28,10 @@ export const action: Action = async function ({ request, locals }) {
 
 		locals.session.data = { isLoggedIn: true, user };
 
-		return {
-			values: {
-				email,
-				password
-			}
-		};
+		return {};
 	} catch (error) {
 		return {
-			values: {
-				email,
-				password
-			},
+			values,
 			formError: error.message
 		};
 	}

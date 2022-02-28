@@ -16,6 +16,7 @@ export const loader: Loader<LoaderData> = async function ({ params }) {
 		});
 
 		if (!post) {
+			// TODO: Once Custom-Errors are implemented, change this
 			throw new Error('Post not found');
 		}
 

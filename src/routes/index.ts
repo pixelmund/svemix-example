@@ -3,35 +3,14 @@ import { get as __get, post as __post } from 'svemix/server';
 import type { Action, Loader } from 'svemix/server';
 import type { Post } from '@prisma/client';
 import db from '$lib/db';
-
 interface LoaderData {
 	posts: Post[];
-	pageInfo: {
-		totalPages: number;
-		currentPage: number;
-		totalCount: number;
-	};
 }
 
-const TAKE = 6;
-
-export const loader: Loader<LoaderData> = async function ({ url }) {
-	const page = parseInt(url.searchParams.get('page')) || 1;
-	const skip = (page - 1) * TAKE;
-
-	const [totalCount, posts] = await db.$transaction([
-		db.post.count(),
-		db.post.findMany({ take: TAKE, skip, orderBy: { createdAt: 'desc' } })
-	]);
-
-	const totalPages = Math.ceil(totalCount / TAKE);
+export const loader: Loader<LoaderData> = async function () {
+	const posts = await db.post.findMany({ orderBy: { createdAt: 'desc' } });
 
 	return {
-		pageInfo: {
-			totalPages,
-			currentPage: page,
-			totalCount
-		},
 		posts
 	};
 };

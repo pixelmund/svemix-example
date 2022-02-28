@@ -4,33 +4,32 @@ import { hashPassword } from '$lib/auth';
 import type { Action } from 'svemix/server';
 import db from '$lib/db';
 
-interface ActionData {
-	username?: string;
-	email?: string;
-	password?: string;
-}
-
-export const action: Action<ActionData> = async function ({ request, locals }) {
+export const action: Action = async function ({ request, locals }) {
 	const body = await request.formData();
 
 	const username = body.get('username') as string;
 	const email = body.get('email') as string;
 	const password = body.get('password') as string;
 
+	const values = {
+		username,
+		email,
+		password
+	};
+
+	const errors = {
+		email: '',
+		password: '',
+		username: ''
+	};
+
 	const user = await db.user.findUnique({ where: { email } });
 
 	if (user) {
+		errors.email = 'User with given E-Mail already exists';
 		return {
-			values: {
-				username,
-				email,
-				password
-			},
-			errors: {
-				email: 'User with given E-Mail already exists',
-				password: '',
-				username: ''
-			}
+			values,
+			errors
 		};
 	}
 
@@ -51,17 +50,10 @@ export const action: Action<ActionData> = async function ({ request, locals }) {
 
 		return {};
 	} catch (error) {
+		errors.username = 'Username already exists';
 		return {
-			values: {
-				username,
-				email,
-				password
-			},
-			errors: {
-				username: 'Username already exists',
-				email: '',
-				password: ''
-			}
+			values,
+			errors
 		};
 	}
 };
